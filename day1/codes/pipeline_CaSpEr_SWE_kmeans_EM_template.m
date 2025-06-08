@@ -2,8 +2,8 @@
 
 %% Parameters (Adjust paths according to your environment)
 
-inputPath0 = "/home2/s159113/matlab_noh/HMM_SWE2025"; 
-inputPath1 = "/exer/raw";
+inputPath0 = "/Users/yushiqiu/Desktop/UTSW/2024Spring/Module_4_Materials"; 
+inputPath1 = "/day1/raw";
                                         
 %% Input
 
@@ -77,3 +77,4 @@ end
 legend([sc{:}], split(num2str(1:K)))
 
 %% EOF
+
