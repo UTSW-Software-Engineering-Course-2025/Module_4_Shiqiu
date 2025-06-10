@@ -2,10 +2,10 @@
 
 %% Parameters (Adjust paths according to your environment)
 
-inputPath0 = "/home2/s159113/matlab_noh/HMM_SWE2025"; 
-inputPath1 = "/exer/raw";
+inputPath0 = "/Users/yushiqiu/Desktop/UTSW/2024Spring/Module_4_Materials/days2-3"; 
+inputPath1 = "raw";
 
-outputPath1 = "/exer/output";
+outputPath1 = "output";
 outputDir = fullfile(inputPath0, outputPath1, "HMM_template");
 if ~isfolder(outputDir); mkdir(outputDir); end
 

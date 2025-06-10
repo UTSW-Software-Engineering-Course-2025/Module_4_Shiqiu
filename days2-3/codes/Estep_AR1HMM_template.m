@@ -22,18 +22,56 @@ for i = 1:M
 end
 
 %% alpha_t(i) forward equation
+alphaMat(1, :) = initPr(:)' .* bMat(1, :);
+c(1) = sum(alphaMat(1, :));
+alphaMat(1, :) = alphaMat(1, :) / c(1); 
 
+for t = 2:T
+    for j = 1:M
+        alphaMat(t, j) = sum(alphaMat(t-1, :) .* tranPr(:, j)') * bMat(t, j);
+    end
+    c(t) = sum(alphaMat(t, :));
+    alphaMat(t, :) = alphaMat(t, :) / c(t);  % scaling
+end
 
 
 %% beta_t(j) backward equation
+betaMat(T, :) = 1;          % unscaled initialization
+d(T) = sum(betaMat(T, :));  % should be 1, but included for completeness
+betaMat(T, :) = betaMat(T, :) / d(T);
 
+for t = T-1:-1:1
+    for i = 1:M
+        betaMat(t, i) = sum(tranPr(i, :) .* bMat(t+1, :) .* betaMat(t+1, :));
+    end
+    d(t) = sum(betaMat(t, :));            % separate normalization factor
+    betaMat(t, :) = betaMat(t, :) / d(t); % normalize
+end
 
 
 %% define gamma_t(i) 
 
+for t = 1:T
+    denom = sum(alphaMat(t, :) .* betaMat(t, :));
+    for i = 1:M
+        gammaMat(t, i) = (alphaMat(t, i) * betaMat(t, i)) / denom;
+    end
+end
 
 
 %% define xi_t(i,j)  
+for t = 1:T-1
+    x_ = 0;
+    for i = 1:M
+        for j = 1:M
+            x_ = x_ + alphaMat(t, i) * tranPr(i, j) * bMat(t+1, j) * betaMat(t+1, j);
+        end
+    end
+    for i = 1:M
+        for j = 1:M
+            xiArr(t, i, j) = (alphaMat(t, i) * tranPr(i, j) * bMat(t+1, j) * betaMat(t+1, j)) / x_;
+        end
+    end
 
 
 
